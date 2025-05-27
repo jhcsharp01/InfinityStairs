@@ -13,9 +13,9 @@ public class GameManager : MonoBehaviour
     public bool isPlaying = false; //실행 유무
 
     //플랫폼 리스트(배치되어있는 판)
-    private List<GameObject> Platform_List = new List<GameObject>();
+    public List<GameObject> Platform_List = new List<GameObject>();
     //플랫폼에 대한 체크 리스트 (발판의 위치)
-    private List<int> Platform_Check_List = new List<int>();
+    public  List<int> Platform_Check_List = new List<int>();
 
     private void Start()
     {
@@ -43,19 +43,21 @@ public class GameManager : MonoBehaviour
     private void Check_Platform(int idx, int direction)
     {
         //[체크 확인용 코드]
-        Debug.Log("인덱스 값 : " + idx + "/플랫폼 : " + Platform_Check_List[idx] + "/방향 : " + direction);
+        Debug.Log("인덱스 값 : " + idx % 20 + "/플랫폼 : " + Platform_Check_List[idx % 20] + "/방향 : " + direction);
+
+
+
 
         //방향이 맞을 경우
         if (Platform_Check_List[idx % 20] ==  direction)
         {
-
             //캐릭터의 위치 변경
             character_pos_idx++;
-            Character.transform.position = Platform_List[idx].transform.position
+            Character.transform.position = Platform_List[character_pos_idx].transform.position
                 + new Vector3(0f, 0.4f, 0f);
 
             //바닥 설정
-            NextPlatform(platform_pos_idx);
+            //NextPlatform(platform_pos_idx);
 
         }
         else
@@ -76,7 +78,7 @@ public class GameManager : MonoBehaviour
     {
         Character.transform.position = Vector3.zero;
 
-        for (platform_pos_idx = 0; platform_pos_idx < 20; platform_pos_idx++)
+        for (platform_pos_idx = 0; platform_pos_idx < 20;)
         {
             NextPlatform(platform_pos_idx);
         }
@@ -90,40 +92,40 @@ public class GameManager : MonoBehaviour
     {
         int pos = UnityEngine.Random.Range(0, 2);
 
-        if(idx == 0)
+        if (idx == 0)
         {
             //Platform_Check_List[idx] = pos;
-            Platform_List[idx].transform.position = new Vector3(0, -0.5f,0);
+            Platform_List[idx].transform.position = new Vector3(0, -0.5f, 0);
         }
         else
         {
-            if(platform_pos_idx < 20)
+            if (platform_pos_idx < 20)
             {
                 if (pos == 0)
                 {
                     Platform_Check_List[idx] = pos;
-                    Platform_List[idx].transform.position = Platform_List[idx - 1].transform.position + new Vector3(-1, 0.5f, 0);
+                    Platform_List[idx].transform.position = Platform_List[idx - 1].transform.position + new Vector3(-2.5f, 1.5f, 0);
                 }
                 else
                 {
                     Platform_Check_List[idx] = pos;
-                    Platform_List[idx].transform.position = Platform_List[idx - 1].transform.position + new Vector3(1, 0.5f, 0);
+                    Platform_List[idx].transform.position = Platform_List[idx - 1].transform.position + new Vector3(2.5f, 1.5f, 0);
                 }
             }
             else //인덱스 범위를 넘은 경우
             {
                 //왼쪽 발판
                 if (pos == 0)
-                {     
-                    if(idx % 20 == 0)
+                {
+                    if (idx % 20 == 0)
                     {
                         Platform_Check_List[19] = pos;
-                        Platform_List[idx % 20].transform.position = Platform_List[19].transform.position + new Vector3(-1, 0.5f, 0);
+                        Platform_List[idx % 20].transform.position = Platform_List[19].transform.position + new Vector3(-2.5f, 1.5f, 0);
                     }
                     else
                     {
                         Platform_Check_List[idx % 20] = pos;
-                        Platform_List[idx % 20].transform.position = Platform_List[idx % 20].transform.position + new Vector3(-1, 0.5f, 0);
+                        Platform_List[idx % 20].transform.position = Platform_List[idx % 20].transform.position + new Vector3(-2.5f, 1.5f, 0);
                     }
                 }
                 //오른쪽 발판
@@ -132,16 +134,18 @@ public class GameManager : MonoBehaviour
                     if (idx % 20 == 0)
                     {
                         Platform_Check_List[19] = pos;
-                        Platform_List[idx % 20].transform.position = Platform_List[19].transform.position + new Vector3(1, 0.5f, 0);
+                        Platform_List[idx % 20].transform.position = Platform_List[19].transform.position + new Vector3(2.5f, 1.5f, 0);
                     }
                     else
                     {
                         Platform_Check_List[idx % 20] = pos;
-                        Platform_List[idx % 20].transform.position = Platform_List[idx % 20].transform.position + new Vector3(1, 0.5f, 0);
+                        Platform_List[idx % 20].transform.position = Platform_List[idx % 20].transform.position + new Vector3(2.5f, 1.5f, 0);
                     }
                 }
-            }        
-        }     
+            }
+        }
+        platform_pos_idx++;
+
     }
 
     private void SetFlatform()
