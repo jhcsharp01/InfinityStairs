@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
                 + new Vector3(0f, 0.4f, 0f);
 
             //¹Ù´Ú ¼³Á¤
-            NextFlatform(platform_pos_idx);
+            NextPlatform(platform_pos_idx);
 
         }
         else
